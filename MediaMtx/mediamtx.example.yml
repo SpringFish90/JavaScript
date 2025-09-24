@@ -464,7 +464,7 @@ pathDefaults:
   sourceFingerprint:
   # If the source is a URL, it will be pulled only when at least
   # one reader is connected, saving bandwidth.
-  # sourceOnDemand: no # 클라이언트가 연결될 때만 소스를 pull/publish 시작
+  sourceOnDemand: yes # 클라이언트가 연결될 때만 소스를 pull/publish 시작
   # If sourceOnDemand is "yes", readers will be put on hold until the source is
   # ready or until this amount of time has passed.
   sourceOnDemandStartTimeout: 30s # 소스 준비 최대 대기 시간
@@ -762,13 +762,10 @@ pathDefaults:
 paths:
   "CAM1":
     source: rtsp://username:password@192.168.0.101:555/Ch1
-    sourceOnDemand: yes
   "CAM2":
     source: rtsp://username:password@192.168.0.102:555/Ch1
-    sourceOnDemand: yes
   "CAM3":
     source: rtsp://username:password@192.168.0.103:555/Ch1
-    sourceOnDemand: yes
 
   # example:
   # my_camera:
