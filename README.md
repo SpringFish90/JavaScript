@@ -1,5 +1,3 @@
-<details>
-  <summary>MediaMTX Example</summary>
 # RTSP Streaming with MediaMTX and hls.js
 
 This example demonstrates how to play an RTSP stream on the web using **MediaMTX** and **hls.js**.
@@ -33,4 +31,3 @@ sourceOnDemand: yes
 
 # Close the source when all clients disconnect, after this duration.
 sourceOnDemandCloseAfter: 5s
-</details>
