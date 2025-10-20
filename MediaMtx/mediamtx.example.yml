@@ -21,7 +21,7 @@ readTimeout: 10s
 writeTimeout: 10s
 # Size of the queue of outgoing packets.
 # A higher value allows to increase throughput, a lower value allows to save RAM.
-writeQueueSize: 512
+writeQueueSize: 2048
 # Maximum size of outgoing UDP packets.
 # This can be decreased to avoid fragmentation on networks with a low UDP MTU.
 udpMaxPayloadSize: 1472
@@ -241,7 +241,7 @@ rtsp: yes
 # UDP-multicast allows to save bandwidth when clients are all in the same LAN.
 # TCP is the most versatile.
 # The handshake is always performed with TCP.
-rtspTransports: [udp, tcp]# UDP 우선, TCP fallback
+rtspTransports: [tcp]
 # Use secure protocol variants (RTSPS, TLS, SRTP).
 # Available values are "no", "strict", "optional".
 rtspEncryption: "no"
@@ -333,11 +333,11 @@ hlsAlwaysRemux: no # 사용자가 HLS URL 요청할 때만 HLS segment 생성
 # * mpegts - uses MPEG-TS segments, for maximum compatibility.
 # * fmp4 - uses fragmented MP4 segments, more efficient.
 # * lowLatency - uses Low-Latency HLS.
-hlsVariant: lowLatency
+hlsVariant: mpegts
 # Number of HLS segments to keep on the server.
 # Segments allow to seek through the stream.
 # Their number doesn't influence latency.
-hlsSegmentCount: 7 # 세그먼트 개수, 너무 많으면 메모리 ↑
+hlsSegmentCount: 3 # 세그먼트 개수, 너무 많으면 메모리 ↑
 # Minimum duration of each segment.
 # A player usually puts 3 segments in a buffer before reproducing the stream.
 # The final segment duration is also influenced by the interval between IDR frames,
@@ -464,7 +464,7 @@ pathDefaults:
   sourceFingerprint:
   # If the source is a URL, it will be pulled only when at least
   # one reader is connected, saving bandwidth.
-  sourceOnDemand: yes # 클라이언트가 연결될 때만 소스를 pull/publish 시작
+  #sourceOnDemand: yes # 클라이언트가 연결될 때만 소스를 pull/publish 시작
   # If sourceOnDemand is "yes", readers will be put on hold until the source is
   # ready or until this amount of time has passed.
   sourceOnDemandStartTimeout: 30s # 소스 준비 최대 대기 시간
@@ -519,7 +519,7 @@ pathDefaults:
   # Default path settings -> RTSP source (when source is a RTSP or a RTSPS URL)
 
   # Transport protocol used to pull the stream. available values are "automatic", "udp", "multicast", "tcp".
-  rtspTransport: automatic
+  rtspTransport: tcp
   # Support sources that don't provide server ports or use random server ports. This is a security issue
   # and must be used only when interacting with sources that require it.
   rtspAnyPort: no
