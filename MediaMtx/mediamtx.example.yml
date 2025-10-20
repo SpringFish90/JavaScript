@@ -16,9 +16,9 @@ logFile: mediamtx.log
 sysLogPrefix: mediamtx
 
 # Timeout of read operations.
-readTimeout: 10s
+readTimeout: 20s
 # Timeout of write operations.
-writeTimeout: 10s
+writeTimeout: 20s
 # Size of the queue of outgoing packets.
 # A higher value allows to increase throughput, a lower value allows to save RAM.
 writeQueueSize: 2048
@@ -328,12 +328,12 @@ hlsAllowOrigin: '*'
 hlsTrustedProxies: []
 # By default, HLS is generated only when requested by a user.
 # This option allows to generate it always, avoiding the delay between request and generation.
-hlsAlwaysRemux: no # 사용자가 HLS URL 요청할 때만 HLS segment 생성
+hlsAlwaysRemux: yes
 # Variant of the HLS protocol to use. Available options are:
 # * mpegts - uses MPEG-TS segments, for maximum compatibility.
 # * fmp4 - uses fragmented MP4 segments, more efficient.
 # * lowLatency - uses Low-Latency HLS.
-hlsVariant: mpegts
+hlsVariant: fmp4
 # Number of HLS segments to keep on the server.
 # Segments allow to seek through the stream.
 # Their number doesn't influence latency.
@@ -343,7 +343,7 @@ hlsSegmentCount: 3 # 세그먼트 개수, 너무 많으면 메모리 ↑
 # The final segment duration is also influenced by the interval between IDR frames,
 # since the server changes the duration in order to include at least one IDR frame
 # in each segment.
-hlsSegmentDuration: 1500ms # 세그먼트 길이 ↑ → HLS 트랜스코딩 횟수 ↓ → CPU 부담 감소
+hlsSegmentDuration: 1000ms # 세그먼트 길이 ↑ → HLS 트랜스코딩 횟수 ↓ → CPU 부담 감소
 # Minimum duration of each part.
 # A player usually puts 3 parts in a buffer before reproducing the stream.
 # Parts are used in Low-Latency HLS in place of segments.
