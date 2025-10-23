@@ -9,62 +9,78 @@
     <style>
         video {
             width: 100%;
-            max-width: 800px;
-            height: auto;
+            max-width: 640px;
         }
         .container {
             text-align: center;
             padding: 20px;
         }
-        input {
-            margin: 10px;
-            padding: 5px;
-            width: 300px;
-        }
-        button {
-            padding: 5px 10px;
-        }
     </style>
 </head>
   <body>
+ 
     <div class="container">
-        <h1>CCTV Viewer</h1>
-        <div class="row">
-            <div class="col-sm-4"><video id="video1" controls></video></div>
-            <div class="col-sm-4"><video id="video2" controls></video></div>
-            <div class="col-sm-4"><video id="video3" controls></video></div>
+        <h5>개수 입력</h5>
+        <input type="number" id="videoCount" style="width:150px;" placeholder="숫자 입력" min="1" max="102"/>
+        <h3>CCTV Viewer</h3>
+        <div id="videoList" class="row">
         </div>
     </div>
     <script>
-        const urls = [
-            'CAM1','CAM2','CAM3'
-        ];
-
-        const loop_count = 3;
-
-        for (let i = 0; i < loop_count; i++) {
-            const video = document.getElementById(`video${i+1}`);
-            const url = `http://192.168.0.100:38888/${urls[i]}/index.m3u8`;
-
-            function setNoVideo(){
-                video.parentElement.remove();
+        const input = document.getElementById('videoCount');
+        const list = document.getElementById('videoList');
+    
+        input.addEventListener('keypress', (event) => {
+			if (event.key != 'Enter') {
+				return;
+			}
+            list.innerHTML = '';
+            const maxCount = parseInt(document.getElementById("videoCount").max);
+            let count = parseInt(input.value);
+            if(count > maxCount){
+                count = maxCount;
+                document.getElementById("videoCount").value = maxCount;
             }
+            
+            for(let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'col-sm-4';
 
-            if (Hls.isSupported()) {
-                const hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.ERROR, function (event, data) {
-                    if (data.type === 'networkError' && data.response && data.response.code === 404) {
-                        setNoVideo();
-                        hls.detachMedia();
-                        hls.destroy();
-                    }
-                });
-            } else {
-                setNoVideo();
+                const video = document.createElement('video');
+                const url = `http://localhost:38888/CAM${i+1}/index.m3u8`;
+                
+                if(Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(url);
+                    hls.attachMedia(video);
+                    
+                    video.controls = true;
+                    video.autoplay = true;
+                    video.muted = true;
+
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        video.onloadedmetadata = () => {
+                            if(!isNaN(video.duration)) {
+                                video.currentTime = 0;
+                            }
+                        };
+                        video.play();
+                    });
+                    // hls.on(Hls.Events.ERROR, function (event, data) {
+                    //     if(data.type === 'networkError' && data.response && data.response.code === 404) {
+                    //         setNoVideo();
+                    //         hls.detachMedia();
+                    //         hls.destroy();
+                    //     }
+                    // });
+                } else {
+                    setNoVideo();
+                }
+
+                div.appendChild(video);
+                list.appendChild(div);
             }
-        }
+        });
     </script>
 </body>
 </html>
