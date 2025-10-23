@@ -9,11 +9,9 @@
     <style>
         video {
             width: 100%;
-            max-width: 640px;
         }
         .container {
             text-align: center;
-            padding: 20px;
         }
     </style>
 </head>
@@ -44,7 +42,7 @@
             
             for(let i = 0; i < count; i++) {
                 const div = document.createElement('div');
-                div.className = 'col-sm-4';
+                div.className = 'col-sm-2';
 
                 const video = document.createElement('video');
                 const url = `http://localhost:38888/CAM${i+1}/index.m3u8`;
