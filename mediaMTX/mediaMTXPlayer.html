@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTSP to HLS Stream Viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+  <body>
+ 
+    <div class="container">
+		<h5>포트 입력:38888(hls), 38889(webrtc)</h5>
+		<select id="selectPort">
+		    <option value="38889">webrtc</option>
+		    <option value="38888">hls</option>
+		</select>
+        <h5>개수 입력</h5>
+        <input type="number" id="videoCount" style="width:150px;" placeholder="숫자 입력" min="1" max="102"/>
+        <h3>CCTV Viewer</h3>
+        <div id="videoList" class="row">
+        </div>
+    </div>
+    <script>
+        const selectPort = document.getElementById('selectPort');
+        const input = document.getElementById('videoCount');
+        const list = document.getElementById('videoList');
+		
+		selectPort.selectedIndex = 0;
+    
+        input.addEventListener('keypress', (event) => {
+            if (event.key != 'Enter') {
+                return;
+            }
+            list.innerHTML = '';
+            const maxCount = parseInt(document.getElementById("videoCount").max);
+            let count = parseInt(input.value);
+            if(count > maxCount){
+                count = maxCount;
+                document.getElementById("videoCount").value = maxCount;
+            }
+            for(let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'col-sm-2';
+
+                const iframe = document.createElement('iframe');
+                iframe.src = `http://localhost:${selectPort.value}/CAM${i+1}`;
+
+                div.appendChild(iframe);
+                list.appendChild(div);
+            }
+        });
+    </script>
+</body>
+</html>
